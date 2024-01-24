@@ -2,14 +2,17 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const AWS = require("aws-sdk");
-
-require("dotenv").config();
+const dotenv = require("dotenv").config();
 
 const app = express();
 const port = 3001; // or any preferred port
 
 app.use(cors());
 app.use(bodyParser.json());
+
+console.log("AWS_REGION from process.env:", process.env.AWS_REGION);
+console.log("All environment variables:", process.env);
+
 
 AWS.config.update({
   region: process.env.AWS_REGION,
@@ -27,7 +30,7 @@ app.post("/synthesize", async (req, res) => {
     const params = {
       OutputFormat: "mp3",
       Text: text,
-      VoiceId: voiceId || "Joanna", // Set default voice or provide voiceId in request
+      VoiceId: voiceId || "Emma", // Set default voice or provide voiceId in request
     };
 
     const data = await Polly.synthesizeSpeech(params).promise();
